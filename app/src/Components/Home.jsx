@@ -33,9 +33,8 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             Cool Fintech App
           </Typography>
-          <Button color="inherit" onClick={() => { Mono(env).open(); }}>{env}</Button>
+          <Button color="inherit" onClick={() => { Mono(env).open(); }}>Login</Button>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
