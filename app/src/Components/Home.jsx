@@ -4,7 +4,10 @@ import {
   AppBar, Toolbar, Typography, Button,
 } from '@material-ui/core';
 import { Money } from '@material-ui/icons';
+import { config } from 'dotenv';
 import Mono from '../Mono';
+
+config();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const env = process.env.REACT_APP_MONO_KEY;
 
   return (
     <div className={classes.root}>
@@ -29,7 +33,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             Cool Fintech App
           </Typography>
-          <Button color="inherit" onClick={() => { Mono().open(); }}>Login</Button>
+          <Button color="inherit" onClick={() => { Mono(env).open(); }}>{env}</Button>
         </Toolbar>
       </AppBar>
     </div>
