@@ -1,0 +1,22 @@
+{
+  "name": "mono-webapp",
+  "version": "1.0.0",
+  "description": "A simple web app that uses customers balance, credits and debits to  determine their credit worthiness with Mono api",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd app && npm build",
+    "install": "cd app && npm install",
+    "start": "cd app && serve -s build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okezieobi/mono-webapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okezieobi/mono-webapp/issues"
+  },
+  "homepage": "https://github.com/okezieobi/mono-webapp#readme"
+}
