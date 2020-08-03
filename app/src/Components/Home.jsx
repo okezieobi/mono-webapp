@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar, Toolbar, Typography, Button, Container, Grid, Box, CssBaseline, TextField, Link, Paper,
@@ -6,7 +7,7 @@ import {
 import { Money } from '@material-ui/icons';
 import { config } from 'dotenv';
 import HomeBG from '../svg/Home.svg';
-import Mono from '../services/Mono';
+import { widget, saveToLocalStore } from '../services/Mono';
 
 config();
 
@@ -56,16 +57,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Home() {
+  const history = useHistory();
   const classes = useStyles();
   const env = process.env.REACT_APP_MONO_KEY;
   const [btnState, setBtnState] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [amount, setAmount] = useState(0);
 
-  const onBtnClick = () => {
+  const handleClick = () => {
     if (!btnState) {
       setBtnState(true);
     }
-    Mono(env).open();
+    saveToLocalStore('mono_app_firstname', firstName);
+    saveToLocalStore('mono_app_lastname', lastName);
+    saveToLocalStore('mono_app_email', email);
+    saveToLocalStore('mono_app_amount', amount);
+    widget(env).open();
+    history.push('/dashboard');
   };
+
+  const handleInputChange = ({ target: { value } }, setState) => setState(value);
 
   return (
     <div className={classes.root}>
@@ -96,6 +109,7 @@ export default function Home() {
                     id="firstName"
                     label="First Name"
                     autoFocus
+                    onChange={(event) => handleInputChange(event, setFirstName)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -107,6 +121,7 @@ export default function Home() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
+                    onChange={(event) => handleInputChange(event, setLastName)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -118,6 +133,7 @@ export default function Home() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    onChange={(event) => handleInputChange(event, setEmail)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -130,6 +146,7 @@ export default function Home() {
                     type="number"
                     id="amount"
                     autoComplete="current-amount"
+                    onChange={(event) => handleInputChange(event, setAmount)}
                   />
                 </Grid>
               </Grid>
@@ -138,7 +155,7 @@ export default function Home() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={onBtnClick}
+                onClick={handleClick}
                 disabled={btnState}
               >
                 {btnState ? 'Sending ...' : 'Submit'}

@@ -1,6 +1,10 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-restricted-globals */
-export default (env) => {
+const saveToLocalStore = (prop, value) => {
+  localStorage.setItem(prop, value);
+};
+
+const widget = (env) => {
   const options = {
     onSuccess(response) {
       alert(JSON.stringify(response));
@@ -12,8 +16,6 @@ export default (env) => {
     },
     onClose() {
       alert('user closed the widget.');
-      location.reload(true);
-      return false;
     },
   };
 
@@ -21,4 +23,8 @@ export default (env) => {
   const connect = new Connect(env, options);
   connect.setup();
   return connect;
+};
+
+export {
+  saveToLocalStore, widget,
 };
