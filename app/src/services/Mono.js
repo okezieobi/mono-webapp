@@ -1,11 +1,19 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-restricted-globals */
 export default (env) => {
-  /* eslint-disable no-alert */
   const options = {
     onSuccess(response) {
       alert(JSON.stringify(response));
+      /*
+      response : { "code": "code_xyz" }
+      you can send this code back to your server to get this
+      authenticated account and start making requests.
+      */
     },
     onClose() {
       alert('user closed the widget.');
+      location.reload(true);
+      return false;
     },
   };
 

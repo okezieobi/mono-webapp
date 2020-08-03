@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar, Toolbar, Typography, Button, Container, Grid, Box, CssBaseline, TextField, Link, Paper,
@@ -6,7 +6,7 @@ import {
 import { Money } from '@material-ui/icons';
 import { config } from 'dotenv';
 import HomeBG from '../svg/Home.svg';
-import Mono from '../Mono';
+import Mono from '../services/Mono';
 
 config();
 
@@ -41,12 +41,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     padding: theme.spacing(4),
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -62,6 +58,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const env = process.env.REACT_APP_MONO_KEY;
+  const [btnState, setBtnState] = useState(false);
+
+  const onBtnClick = () => {
+    if (!btnState) {
+      setBtnState(true);
+    }
+    Mono(env).open();
+  };
 
   return (
     <div className={classes.root}>
@@ -71,12 +75,11 @@ export default function Home() {
           <Typography variant="h6" className={classes.title}>
             Cool Fintech App
           </Typography>
-          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <Container className={classes.backDrop} maxWidth="xl">
+        <CssBaseline />
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
           <Paper elevation={18} className={classes.paper}>
             <Typography component="h1" variant="h5">
               Sign up
@@ -135,17 +138,11 @@ export default function Home() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => { Mono(env).open(); }}
+                onClick={onBtnClick}
+                disabled={btnState}
               >
-                Submit
+                {btnState ? 'Sending ...' : 'Submit'}
               </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </Paper>
           <Box mt={5}>
