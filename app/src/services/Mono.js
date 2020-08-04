@@ -1,10 +1,15 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-restricted-globals */
+import { config } from 'dotenv';
+// import fetch from './Fetch';
+
+config();
+
 const saveToLocalStore = (prop, value) => {
   localStorage.setItem(prop, value);
 };
 
-const widget = (env) => {
+const widget = () => {
   const options = {
     onSuccess(response) {
       alert(JSON.stringify(response));
@@ -20,7 +25,7 @@ const widget = (env) => {
   };
 
   // eslint-disable-next-line no-undef
-  const connect = new Connect(env, options);
+  const connect = new Connect(process.env.REACT_APP_MONO_KEY, options);
   connect.setup();
   return connect;
 };

@@ -1,5 +1,5 @@
+/* eslint-disable no-alert */
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar, Toolbar, Typography, Button, Container, Grid, Box, CssBaseline, TextField, Link, Paper,
@@ -7,9 +7,31 @@ import {
 import { Money } from '@material-ui/icons';
 import { config } from 'dotenv';
 import HomeBG from '../svg/Home.svg';
-import { widget, saveToLocalStore } from '../services/Mono';
 
 config();
+
+const widget = () => {
+  const options = {
+    onSuccess({ code }) {
+      // JSON.stringify(response);
+      localStorage.setItem('mono_app_code', code);
+      window.location.href = '/dashboard';
+      /*
+      response : { "code": "code_xyz" }
+      you can send this code back to your server to get this
+      authenticated account and start making requests.
+      */
+    },
+    onClose() {
+      alert('user closed the widget.');
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  const connect = new Connect(process.env.REACT_APP_MONO_KEY, options);
+  connect.setup();
+  return connect;
+};
 
 function Copyright() {
   return (
@@ -57,9 +79,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Home() {
-  const history = useHistory();
   const classes = useStyles();
-  const env = process.env.REACT_APP_MONO_KEY;
   const [btnState, setBtnState] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -70,15 +90,12 @@ export default function Home() {
     if (!btnState) {
       setBtnState(true);
     }
-    saveToLocalStore('mono_app_firstname', firstName);
-    saveToLocalStore('mono_app_lastname', lastName);
-    saveToLocalStore('mono_app_email', email);
-    saveToLocalStore('mono_app_amount', amount);
-    widget(env).open();
-    history.push('/dashboard');
+    localStorage.setItem('mono_app_firstname', firstName);
+    localStorage.setItem('mono_app_lastname', lastName);
+    localStorage.setItem('mono_app_email', email);
+    localStorage.setItem('mono_app_amount', amount);
+    widget().open();
   };
-
-  const handleInputChange = ({ target: { value } }, setState) => setState(value);
 
   return (
     <div className={classes.root}>
@@ -109,7 +126,7 @@ export default function Home() {
                     id="firstName"
                     label="First Name"
                     autoFocus
-                    onChange={(event) => handleInputChange(event, setFirstName)}
+                    onChange={({ target: { value } }) => setFirstName(value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -121,7 +138,7 @@ export default function Home() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
-                    onChange={(event) => handleInputChange(event, setLastName)}
+                    onChange={({ target: { value } }) => setLastName(value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -133,7 +150,7 @@ export default function Home() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    onChange={(event) => handleInputChange(event, setEmail)}
+                    onChange={({ target: { value } }) => setEmail(value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -146,7 +163,7 @@ export default function Home() {
                     type="number"
                     id="amount"
                     autoComplete="current-amount"
-                    onChange={(event) => handleInputChange(event, setAmount)}
+                    onChange={({ target: { value } }) => setAmount(value)}
                   />
                 </Grid>
               </Grid>
