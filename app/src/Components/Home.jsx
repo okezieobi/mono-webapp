@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-alert */
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar, Toolbar, Typography, Button, Container, Grid, Box, CssBaseline, TextField, Link, Paper,
@@ -6,9 +7,31 @@ import {
 import { Money } from '@material-ui/icons';
 import { config } from 'dotenv';
 import HomeBG from '../svg/Home.svg';
-import Mono from '../Mono';
 
 config();
+
+const widget = () => {
+  const options = {
+    onSuccess({ code }) {
+      // JSON.stringify(response);
+      localStorage.setItem('mono_app_code', code);
+      window.location.href = '/dashboard';
+      /*
+      response : { "code": "code_xyz" }
+      you can send this code back to your server to get this
+      authenticated account and start making requests.
+      */
+    },
+    onClose() {
+      alert('user closed the widget.');
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  const connect = new Connect(process.env.REACT_APP_MONO_KEY, options);
+  connect.setup();
+  return connect;
+};
 
 function Copyright() {
   return (
@@ -41,12 +64,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     padding: theme.spacing(4),
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -61,7 +80,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const env = process.env.REACT_APP_MONO_KEY;
+  const [btnState, setBtnState] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [amount, setAmount] = useState(0);
+
+  const handleClick = () => {
+    if (!btnState) {
+      setBtnState(true);
+    }
+    localStorage.setItem('mono_app_firstname', firstName);
+    localStorage.setItem('mono_app_lastname', lastName);
+    localStorage.setItem('mono_app_email', email);
+    localStorage.setItem('mono_app_amount', amount);
+    widget().open();
+  };
 
   return (
     <div className={classes.root}>
@@ -71,12 +105,11 @@ export default function Home() {
           <Typography variant="h6" className={classes.title}>
             Cool Fintech App
           </Typography>
-          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <Container className={classes.backDrop} maxWidth="xl">
+        <CssBaseline />
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
           <Paper elevation={18} className={classes.paper}>
             <Typography component="h1" variant="h5">
               Sign up
@@ -93,6 +126,7 @@ export default function Home() {
                     id="firstName"
                     label="First Name"
                     autoFocus
+                    onChange={({ target: { value } }) => setFirstName(value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -104,6 +138,7 @@ export default function Home() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
+                    onChange={({ target: { value } }) => setLastName(value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -115,6 +150,7 @@ export default function Home() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    onChange={({ target: { value } }) => setEmail(value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -127,6 +163,7 @@ export default function Home() {
                     type="number"
                     id="amount"
                     autoComplete="current-amount"
+                    onChange={({ target: { value } }) => setAmount(value)}
                   />
                 </Grid>
               </Grid>
@@ -135,17 +172,11 @@ export default function Home() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={() => { Mono(env).open(); }}
+                onClick={handleClick}
+                disabled={btnState}
               >
-                Submit
+                {btnState ? 'Sending ...' : 'Submit'}
               </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </Paper>
           <Box mt={5}>
