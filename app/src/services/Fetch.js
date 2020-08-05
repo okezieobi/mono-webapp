@@ -1,4 +1,4 @@
-const FetchApi = async ({
+export default async ({
   inputData = {}, url = '', requestMethod = '', auth = '',
 }) => {
   try {
@@ -16,5 +16,3 @@ const FetchApi = async ({
     return error;
   }
 };
-
-export default FetchApi;
