@@ -6,7 +6,7 @@ import {
 import { Money } from '@material-ui/icons';
 import { config } from 'dotenv';
 import HomeBG from '../svg/Home.svg';
-import Widget from '../services/Mono';
+import { widget, enrollUsers } from '../services/Mono';
 
 config();
 
@@ -71,7 +71,8 @@ export default function Home() {
     localStorage.setItem('mono_app_lastname', lastName);
     localStorage.setItem('mono_app_email', email);
     localStorage.setItem('mono_app_amount', amount);
-    Widget().open();
+    widget().open();
+    enrollUsers();
   };
 
   return (
