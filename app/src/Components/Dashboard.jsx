@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, Container,
@@ -7,7 +7,6 @@ import {
 } from '@material-ui/core';
 import { Dashboard, Menu } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { getTransactions } from '../services/Mono';
 
 const drawerWidth = 240;
 
@@ -48,19 +47,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dash(props) {
-  const { window } = props;
+function Dash({ window, children }) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [transactions, setTransactions] = useState({});
-  // const [debits, setDebits] = useState([]);
-  // const [credits, setCredits] = useState([]);
   const container = window !== undefined ? () => window().document.body : undefined;
-
-  useEffect(() => {
-    setTransactions(getTransactions());
-  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -135,13 +126,9 @@ function Dash(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container>
-          <Typography>{`Account Number: ${transactions.accountnumber}`}</Typography>
-          <Typography>{`Balance: ${transactions.balance}`}</Typography>
-          <Typography>{`BVN: ${transactions.bvn}`}</Typography>
-          <Typography>{`Currency: ${transactions.currency}`}</Typography>
-          <Typography>{`Name: ${transactions.name}`}</Typography>
-          <Typography>{`Type: ${transactions.type}`}</Typography>
-          <Typography>{`ID: ${transactions._id}`}</Typography>
+          <Container>
+            {children}
+          </Container>
         </Container>
       </main>
     </div>
@@ -154,6 +141,7 @@ Dash.propTypes = {
    * You won't need it on your project.
    */
   window: PropTypes.func,
+  children: PropTypes.element.isRequired,
 };
 
 Dash.defaultProps = {
