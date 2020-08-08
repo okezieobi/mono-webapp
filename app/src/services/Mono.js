@@ -17,7 +17,7 @@ const widget = () => {
         .then((response) => response.json())
         .then(({ id }) => localStorage.setItem('mono-app-id', id));
 
-      window.location.href = '/balances';
+      window.location.href = '/accounts';
       /*
       response : { "code": "code_xyz" }
       you can send this code back to your server to get this

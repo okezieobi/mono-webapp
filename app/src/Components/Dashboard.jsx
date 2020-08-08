@@ -60,7 +60,7 @@ function Dash({ window, children }) {
   const drawer = (
     <div>
       <Container className={classes.toolbar}>
-        <Typography className={classes.title} variant="h6" noWrap>
+        <Typography className={classes.title} color="primary" variant="h6" noWrap>
           Cool Fintech App
         </Typography>
       </Container>
@@ -125,11 +125,7 @@ function Dash({ window, children }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Container>
-          <Container>
-            {children}
-          </Container>
-        </Container>
+        {children}
       </main>
     </div>
   );
