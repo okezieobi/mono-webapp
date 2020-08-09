@@ -61,7 +61,7 @@ function Dash({ window, children }) {
     <div>
       <Container className={classes.toolbar}>
         <Typography className={classes.title} color="primary" variant="h6" noWrap>
-          Cool Fintech App
+          Demo Fintech App
         </Typography>
       </Container>
       <Divider />

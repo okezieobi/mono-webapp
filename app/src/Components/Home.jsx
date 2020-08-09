@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  AppBar, Toolbar, Typography, Button, Container, Grid, Box, CssBaseline, TextField, Link, Paper,
-} from '@material-ui/core';
-import { Money } from '@material-ui/icons';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import PaymentIcon from '@material-ui/icons/Payment';
 import { config } from 'dotenv';
-import HomeBG from '../svg/Home.svg';
+import HomeBG from '../svg/testBG2.svg';
 import widget from '../services/Mono';
 
 config();
@@ -15,7 +23,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Cool Fintech App
+        Demo Fintech App
       </Link>
       {' '}
       {new Date().getFullYear()}
@@ -78,9 +86,9 @@ export default function Home() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Money className={classes.menuButton} />
+          <PaymentIcon className={classes.menuButton} />
           <Typography variant="h6" className={classes.title}>
-            Cool Fintech App
+            Demo Fintech App
           </Typography>
         </Toolbar>
       </AppBar>
