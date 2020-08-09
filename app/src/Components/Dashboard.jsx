@@ -1,18 +1,33 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, Container,
-  List, ListItem, ListItemText, Toolbar, Typography, ListItemIcon,
-} from '@material-ui/core';
-import { Dashboard, Menu } from '@material-ui/icons';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Box from '@material-ui/core/Box';
+import MenuIcon from '@material-ui/icons/Menu';
+import PaymentIcon from '@material-ui/icons/PaymentOutlined';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import DashboardBG from '../svg/testBG2.svg';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    backgroundImage: `url(${DashboardBG})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -42,12 +57,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  title: {
-    padding: theme.spacing(2),
+  dashboardIcon: {
+    marginRight: theme.spacing(1),
   },
 }));
 
-function Dash({ window, children }) {
+function Dashboard({ window, children }) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,22 +73,25 @@ function Dash({ window, children }) {
   };
 
   const drawer = (
-    <div>
-      <Container className={classes.toolbar}>
-        <Typography className={classes.title} color="primary" variant="h6" noWrap>
-          Demo Fintech App
-        </Typography>
-      </Container>
+    <Box>
+      <Box className={classes.toolbar}>
+        <Toolbar>
+          <PaymentIcon className={classes.dashboardIcon} />
+          <Typography color="primary" noWrap>
+            Demo Fintech App
+          </Typography>
+        </Toolbar>
+      </Box>
       <Divider />
       <List>
-        {[{ text: 'Dashboard', icon: <Dashboard /> }].map(({ text, icon }) => (
+        {[{ text: 'Dashboard', icon: <DashboardIcon /> }].map(({ text, icon }) => (
           <ListItem button key={text}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
-    </div>
+    </Box>
   );
 
   return (
@@ -88,7 +106,7 @@ function Dash({ window, children }) {
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
-            <Menu />
+            <MenuIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -131,7 +149,7 @@ function Dash({ window, children }) {
   );
 }
 
-Dash.propTypes = {
+Dashboard.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -140,8 +158,8 @@ Dash.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-Dash.defaultProps = {
+Dashboard.defaultProps = {
   window: undefined,
 };
 
-export default Dash;
+export default Dashboard;
